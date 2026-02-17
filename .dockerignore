@@ -1,0 +1,36 @@
+# Controle de versão
+.git
+.gitignore
+
+# Ambiente virtual local
+.venv/
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Banco de dados local
+db.sqlite3
+
+# Variáveis de ambiente (senhas/segredos)
+.env
+
+# IDE e editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Artefatos do agente
+.agent/
+.gemini/
+.idx/
+
+# Lock do uv (já copiado explicitamente)
+# uv.lock  -- mantido, necessário para reprodutibilidade

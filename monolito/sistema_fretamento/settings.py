@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv() 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-v2hswz#3hooah(uabz(8f&l$u-c)4ptofwqk-itxr5f_dcn9pb'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'rest_framework',
     'logistica',
 ]
@@ -73,11 +78,15 @@ WSGI_APPLICATION = 'sistema_fretamento.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
+PASSWORD=os.getenv("DATABASE_PASSWORD")
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': os.getenv("DATABASE_NAME"),
+        'USER': os.getenv("DATABASE_USER"),
+        'PASSWORD': PASSWORD,
+        'HOST': os.getenv("DATABASE_HOST"),
+        'PORT': os.getenv("DATABASE_PORT"),
     }
 }
 
