@@ -1,11 +1,15 @@
 from rest_framework import serializers
 from django.db import transaction
-from .models import RotaExtra, Parada, EmpresaParceira, Veiculo, Motorista
+
+from empresa.models import EmpresaParceira, Motorista, Veiculo
+from .models import RotaExtra, Parada
+
 
 class ParadaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parada
         fields = ['id', 'endereco', 'ordem', 'referencia']
+
 
 class RotaExtraSerializer(serializers.ModelSerializer):
     paradas = ParadaSerializer(many=True, required=False)
@@ -18,20 +22,20 @@ class RotaExtraSerializer(serializers.ModelSerializer):
             'paradas'
         ]
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> RotaExtra:
         paradas_data = validated_data.pop('paradas', [])
-        
+
         with transaction.atomic():
             rota = RotaExtra.objects.create(**validated_data)
-            
+
             for parada_data in paradas_data:
                 Parada.objects.create(rota=rota, **parada_data)
-        
+
         return rota
 
-    def update(self, instance, validated_data):
+    def update(self, instance: RotaExtra, validated_data: dict) -> RotaExtra:
         paradas_data = validated_data.pop('paradas', None)
-        
+
         with transaction.atomic():
             # Atualiza campos da rota
             for attr, value in validated_data.items():
@@ -43,5 +47,5 @@ class RotaExtraSerializer(serializers.ModelSerializer):
                 instance.paradas.all().delete()
                 for parada_data in paradas_data:
                     Parada.objects.create(rota=instance, **parada_data)
-        
+
         return instance
