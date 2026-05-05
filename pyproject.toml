@@ -34,4 +34,8 @@ dependencies = [
     "typing-inspection==0.4.2",
     "tzdata==2025.3",
     "uvicorn==0.40.0",
+    "pid-transit>=0.2.0",
 ]
+
+[tool.uv.sources]
+pid-transit = { path = "../../PID-GTFS", editable = true }
